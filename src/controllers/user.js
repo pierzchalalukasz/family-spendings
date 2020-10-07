@@ -44,7 +44,9 @@ export const authenticateUser = ({ UserModel }) => async (req, res) => {
 };
 
 export const addUser = ({ UserModel }) => async (req, res) => {
-  const { name, email, password } = req.body;
+  const {
+    name, email, password, isAdmin,
+  } = req.body;
 
   try {
     //  Checking if user with given email is not already in db
@@ -57,7 +59,9 @@ export const addUser = ({ UserModel }) => async (req, res) => {
     // Hashing password
     const hashedPassword = await bcrypt.hash(password, salt);
     //  Creating a new user
-    const user = await UserModel.create({ email, name, password: hashedPassword });
+    const user = await UserModel.create({
+      email, name, password: hashedPassword, isAdmin,
+    });
     if (!user) {
       throw Error('An error occured when creating a new user.');
     }
