@@ -6,10 +6,17 @@ export const getById = {
   }),
 };
 
-export const addUser = {
+export const authenticateUser = {
   body: Joi.object({
     email: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
+};
+
+export const addUser = {
+  body: Joi.object({
     name: Joi.string().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
   }),
 };

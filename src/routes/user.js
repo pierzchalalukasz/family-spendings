@@ -1,6 +1,8 @@
 import { validate } from 'express-validation';
 import * as userSchemas from '../schemas/user';
-import { getById, addUser, getAll } from '../controllers/user';
+import {
+  getById, addUser, authenticateUser, getAll,
+} from '../controllers/user';
 
 export default [
   {
@@ -16,8 +18,14 @@ export default [
   },
   {
     method: 'POST',
-    path: '/user',
+    path: '/user/add',
     controller: addUser,
     middleware: [validate(userSchemas.addUser)],
+  },
+  {
+    method: 'POST',
+    path: '/user/authenticate',
+    controller: authenticateUser,
+    middleware: [validate(userSchemas.authenticateUser)],
   },
 ];
