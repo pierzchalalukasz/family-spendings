@@ -1,0 +1,32 @@
+{
+  "name": "rest-boilerplate",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "license": "MIT",
+  "module": "src/index.js",
+  "scripts": {
+    "start": "nodemon --exec \"webpack --mode development\" --watch src",
+    "build": "webpack --mode production",
+    "test": "jest --verbose",
+    "lint": "eslint --cache --format codeframe --ext mjs,js src"
+  },
+  "devDependencies": {
+    "@neutrinojs/airbnb-base": "^9.4.0",
+    "@neutrinojs/jest": "^9.4.0",
+    "@neutrinojs/node": "^9.4.0",
+    "eslint": "^7",
+    "jest": "^26",
+    "neutrino": "^9.4.0",
+    "nodemon": "^2.0.4",
+    "webpack": "^4",
+    "webpack-cli": "^3"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validation": "^3.0.6",
+    "joi-objectid": "^3.0.1",
+    "mongoose": "^5.10.8"
+  }
+}
