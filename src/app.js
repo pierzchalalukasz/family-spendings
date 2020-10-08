@@ -5,11 +5,13 @@ import dotenv from 'dotenv';
 
 import routes from './routes';
 import UserModel from './models/user';
+import FamilyModel from './models/family';
 
 dotenv.config();
 
 export const defaultDependencies = {
   UserModel,
+  FamilyModel,
 };
 
 export const init = async (dependencies = defaultDependencies) => {
