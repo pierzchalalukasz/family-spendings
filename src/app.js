@@ -4,15 +4,12 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
 import routes from './routes';
-import UserModel from './models/user';
-import FamilyModel from './models/family';
+
+import defaultDependencies from './container';
 
 dotenv.config();
 
-export const defaultDependencies = {
-  UserModel,
-  FamilyModel,
-};
+export { defaultDependencies };
 
 export const init = async (dependencies = defaultDependencies) => {
   const app = express();
