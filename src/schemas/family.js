@@ -6,3 +6,9 @@ export const getById = {
     id: Joi.objectId().required(),
   }),
 };
+
+export const createFamily = {
+  body: Joi.object({
+    name: Joi.string().required(),
+  }),
+};

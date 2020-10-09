@@ -1,7 +1,7 @@
 import { validate } from 'express-validation';
 import * as familySchemas from '../schemas/family';
 import {
-  getById, createFamily, addUserToFamily,
+  getById, createFamily,
 } from '../controllers/family';
 
 export default [
@@ -15,10 +15,6 @@ export default [
     method: 'POST',
     path: '/family',
     controller: createFamily,
-  },
-  {
-    method: 'PUT',
-    path: '/family/:_id',
-    controller: addUserToFamily,
+    middleware: [validate(familySchemas.createFamily)],
   },
 ];

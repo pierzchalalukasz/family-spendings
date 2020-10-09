@@ -1,23 +1,17 @@
-export const getById = ({ FamilyModel }) => async (req, res) => {
-  const family = await FamilyModel.findById(req.params.id);
-
+export const getById = ({ FamilyService }) => async (req, res) => {
+  const { id } = req.params;
+  const family = await FamilyService.getById(id);
   if (!family) {
     return res.send(404);
   }
-
   return res.json(family);
 };
 
-export const createFamily = ({ FamilyModel }) => async (req, res) => {
-  const family = await FamilyModel.create(req.body);
-
-  return res.send(family);
-};
-
-export const addUserToFamily = ({ FamilyModel }) => async (req, res) => {
-  const { _id } = req.params;
-  const { userId } = req.body;
-  const addedUser = await FamilyModel.updateOne({ _id }, { $push: { members: userId } });
-
-  return res.json(addedUser);
+export const createFamily = ({ FamilyService }) => async (req, res) => {
+  const { name } = req.body;
+  const family = await FamilyService.createFamily(name);
+  if (!family) {
+    return res.send(404);
+  }
+  return res.json(family);
 };
