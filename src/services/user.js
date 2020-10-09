@@ -33,7 +33,7 @@ const UserService = ({ UserModel }) => {
   };
 
   const addUser = async ({
-    name, email, password, isAdmin,
+    name, email, password, isAdmin, familyId,
   }) => {
     //  Checking if user with given email is not already in db
     const userAlreadyExists = await UserModel.findOne({ email });
@@ -46,7 +46,7 @@ const UserService = ({ UserModel }) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     //  Creating a new user
     const user = await UserModel.create({
-      email, name, password: hashedPassword, isAdmin,
+      email, name, password: hashedPassword, isAdmin, familyId,
     });
 
     return user;
