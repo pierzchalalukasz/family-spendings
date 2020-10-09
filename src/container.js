@@ -3,11 +3,16 @@ import UserModel from './models/user';
 import FamilyService from './services/family';
 import UserService from './services/user';
 
-const container = {
-  FamilyModel,
-  UserModel,
-};
-container.FamilyService = FamilyService(container);
-container.UserService = UserService(container);
+const createContainer = (db) => {
+  const container = {
+    db,
+    FamilyModel,
+    UserModel,
+  };
+  container.FamilyService = FamilyService(container);
+  container.UserService = UserService(container);
 
-export default container;
+  return container;
+};
+
+export default createContainer;

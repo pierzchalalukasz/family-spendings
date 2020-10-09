@@ -6,8 +6,10 @@ describe('user controller', () => {
     json: jest.fn(),
   };
 
-  const UserModel = {
-    findById: jest.fn(),
+  const next = jest.fn();
+
+  const UserService = {
+    getById: jest.fn(),
   };
 
   beforeEach(() => {
@@ -25,15 +27,15 @@ describe('user controller', () => {
         id,
         name: 'Some user',
       };
-      UserModel.findById.mockImplementationOnce(async () => user);
+      UserService.getById.mockImplementationOnce(async () => user);
 
       // when
-      await getById({ UserModel })(req, res);
+      await getById({ UserService })(req, res, next);
 
       // then
-      expect(UserModel.findById).toBeCalledWith(id);
+      expect(UserService.getById).toBeCalledWith(id);
       expect(res.json).toBeCalledWith(user);
-      expect(res.send).not.toBeCalledWith(404);
+      expect(next).not.toBeCalled();
     });
 
     it('when user does NOT exist - returns 404', async () => {
@@ -42,15 +44,20 @@ describe('user controller', () => {
       const req = {
         params: { id },
       };
-      UserModel.findById.mockImplementationOnce(async () => undefined);
+      UserService.getById.mockImplementationOnce(async () => undefined);
 
       // when
-      await getById({ UserModel })(req, res);
+      await getById({ UserService })(req, res, next);
 
       // then
-      expect(UserModel.findById).toBeCalledWith(id);
-      expect(res.send).toBeCalledWith(404);
+      expect(UserService.getById).toBeCalledWith(id);
       expect(res.json).not.toBeCalled();
+      expect(next).toBeCalledWith(
+        expect.objectContaining({
+          statusCode: 404,
+          message: 'User with given id not found.',
+        }),
+      );
     });
   });
 });

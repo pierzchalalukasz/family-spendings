@@ -31,6 +31,11 @@ export const addUser = ({ UserService, FamilyService }) => async (req, res, next
     const { isAdmin } = req.body;
 
     if (!isAdmin) {
+      const { familyId } = req.body;
+      const family = await FamilyService.getById(familyId);
+      if (!family) {
+        throw new ErrorHandler(404, 'Family with given id not found.');
+      }
       const user = await UserService.addUser(req.body);
       if (!user) {
         throw new ErrorHandler(409, 'User with given email already exists.');
@@ -39,12 +44,14 @@ export const addUser = ({ UserService, FamilyService }) => async (req, res, next
     }
 
     const { familyName } = req.body;
+
     const family = await FamilyService.createFamily(familyName);
     const { _id } = family;
     const user = await UserService.addUser({ ...req.body, familyId: _id });
     if (!user) {
       throw new ErrorHandler(409, 'User with given email already exists.');
     }
+
     return res.json(user);
   } catch (error) {
     return next(error);

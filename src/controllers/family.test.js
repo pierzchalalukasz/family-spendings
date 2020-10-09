@@ -6,8 +6,10 @@ describe('family controller', () => {
     json: jest.fn(),
   };
 
-  const FamilyModel = {
-    findById: jest.fn(),
+  const next = jest.fn();
+
+  const FamilyService = {
+    getById: jest.fn(),
   };
 
   beforeEach(() => {
@@ -24,17 +26,16 @@ describe('family controller', () => {
       const family = {
         id,
         name: 'Some family',
-        members: ['5f7ceb3967bbb1004f41afcd'],
       };
-      FamilyModel.findById.mockImplementationOnce(async () => family);
+      FamilyService.getById.mockImplementationOnce(async () => family);
 
       // when
-      await getById({ FamilyModel })(req, res);
+      await getById({ FamilyService })(req, res, next);
 
       // then
-      expect(FamilyModel.findById).toBeCalledWith(id);
+      expect(FamilyService.getById).toBeCalledWith(id);
       expect(res.json).toBeCalledWith(family);
-      expect(res.send).not.toBeCalledWith(404);
+      expect(next).not.toBeCalled();
     });
 
     it('when family does NOT exist - returns 404', async () => {
@@ -43,15 +44,20 @@ describe('family controller', () => {
       const req = {
         params: { id },
       };
-      FamilyModel.findById.mockImplementationOnce(async () => undefined);
+      FamilyService.getById.mockImplementationOnce(async () => undefined);
 
       // when
-      await getById({ FamilyModel })(req, res);
+      await getById({ FamilyService })(req, res, next);
 
       // then
-      expect(FamilyModel.findById).toBeCalledWith(id);
-      expect(res.send).toBeCalledWith(404);
+      expect(FamilyService.getById).toBeCalledWith(id);
       expect(res.json).not.toBeCalled();
+      expect(next).toBeCalledWith(
+        expect.objectContaining({
+          statusCode: 404,
+          message: 'Family with given id not found.',
+        }),
+      );
     });
   });
 });

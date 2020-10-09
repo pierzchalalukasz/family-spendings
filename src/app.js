@@ -5,22 +5,22 @@ import dotenv from 'dotenv';
 
 import routes from './routes';
 
-import defaultDependencies from './container';
+import createContainer from './container';
 import { handleError } from './utils/error';
 
 dotenv.config();
 
-export { defaultDependencies };
-
-export const init = async (dependencies = defaultDependencies) => {
+export const init = async (dependenciesOverride) => {
   const app = express();
   const port = 5000;
 
   app.use(bodyParser.json());
 
-  await mongoose.connect(process.env.DB_CONNECTION_STRING, {
+  const db = await mongoose.connect(process.env.DB_CONNECTION_STRING, {
     useNewUrlParser: true, useUnifiedTopology: true,
   });
+
+  const dependencies = dependenciesOverride || createContainer(db);
 
   routes.forEach(({
     method, path, controller, middleware,
@@ -38,6 +38,7 @@ export const init = async (dependencies = defaultDependencies) => {
     return registeringFn(path, ...handlers);
   });
 
+  // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
     handleError(err, res);
   });
@@ -47,3 +48,5 @@ export const init = async (dependencies = defaultDependencies) => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
 };
+
+export default null;
