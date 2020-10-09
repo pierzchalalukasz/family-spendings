@@ -1,47 +1,64 @@
-export const getById = ({ UserService }) => async (req, res) => {
-  const user = await UserService.getById(req.params.id);
-  if (!user) {
-    return res.sendStatus(404);
-  }
-  return res.json(user);
-};
+import { ErrorHandler } from '../utils/error';
 
-export const authenticateUser = ({ UserService }) => async (req, res) => {
-  const { email, password } = req.body;
-  const { user, token } = await UserService.authenticateUser(email, password);
-
-  if (!user) {
-    return res.sendStatus(404);
-  }
-  return res.json({ user, token });
-};
-
-export const addUser = ({ UserService, FamilyService }) => async (req, res) => {
-  const { isAdmin } = req.body;
-
-  if (!isAdmin) {
-    const user = await UserService.addUser(req.body);
+export const getById = ({ UserService }) => async (req, res, next) => {
+  try {
+    const user = await UserService.getById(req.params.id);
     if (!user) {
-      return res.sendStatus(409);
+      throw new ErrorHandler(404, 'User with given id not found.');
     }
     return res.json(user);
+  } catch (error) {
+    return next(error);
   }
-
-  const { familyName } = req.body;
-  const family = await FamilyService.createFamily(familyName);
-  const { _id } = family;
-  const user = await UserService.addUser({ ...req.body, familyId: _id });
-  if (!user) {
-    return res.sendStatus(409);
-  }
-  return res.json(user);
-  // return res.sendStatus(500);
 };
 
-export const getAll = ({ UserService }) => async (req, res) => {
-  const users = await UserService.getAll();
-  if (!users) {
-    return res.sendStatus(404);
+export const authenticateUser = ({ UserService }) => async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const { user, token } = await UserService.authenticateUser(email, password);
+
+    if (!user) {
+      throw new ErrorHandler(404, 'User with given email not found.');
+    }
+    return res.json({ user, token });
+  } catch (error) {
+    return next(error);
   }
-  return res.json(users);
+};
+
+export const addUser = ({ UserService, FamilyService }) => async (req, res, next) => {
+  try {
+    const { isAdmin } = req.body;
+
+    if (!isAdmin) {
+      const user = await UserService.addUser(req.body);
+      if (!user) {
+        throw new ErrorHandler(409, 'User with given email already exists.');
+      }
+      return res.json(user);
+    }
+
+    const { familyName } = req.body;
+    const family = await FamilyService.createFamily(familyName);
+    const { _id } = family;
+    const user = await UserService.addUser({ ...req.body, familyId: _id });
+    if (!user) {
+      throw new ErrorHandler(409, 'User with given email already exists.');
+    }
+    return res.json(user);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getAll = ({ UserService }) => async (req, res, next) => {
+  try {
+    const users = await UserService.getAll();
+    if (!users) {
+      throw new ErrorHandler(404, 'Users not found.');
+    }
+    return res.json(users);
+  } catch (error) {
+    return next(error);
+  }
 };

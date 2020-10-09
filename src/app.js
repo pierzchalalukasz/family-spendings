@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import routes from './routes';
 
 import defaultDependencies from './container';
+import { handleError } from './utils/error';
 
 dotenv.config();
 
@@ -35,6 +36,10 @@ export const init = async (dependencies = defaultDependencies) => {
     const handlers = [...(middleware || []), controller(dependencies)];
 
     return registeringFn(path, ...handlers);
+  });
+
+  app.use((err, req, res, next) => {
+    handleError(err, res);
   });
 
   app.listen(port, () => {
