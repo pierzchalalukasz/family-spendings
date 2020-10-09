@@ -19,5 +19,6 @@ export const addUser = {
     email: Joi.string().required(),
     password: Joi.string().required(),
     isAdmin: Joi.boolean(),
+    familyId: Joi.objectId().required(),
   }),
 };

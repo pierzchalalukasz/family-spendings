@@ -14,4 +14,7 @@ export default mongoose.model('User', new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  familyId: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 }));
