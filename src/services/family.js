@@ -11,9 +11,16 @@ const FamilyService = ({ FamilyModel }) => {
     return family;
   };
 
+  const updateBudget = async (_id, budget) => {
+    const family = await FamilyModel.updateOne({ _id }, { $set: { budget } });
+
+    return family;
+  };
+
   return {
     getById,
     createFamily,
+    updateBudget,
   };
 };
 

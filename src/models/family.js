@@ -6,5 +6,6 @@ export default mongoose.model('Family', new mongoose.Schema({
   },
   budget: {
     type: Number,
+    default: 0,
   },
 }));
