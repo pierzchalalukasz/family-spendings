@@ -18,13 +18,13 @@ export default [
   },
   {
     method: 'POST',
-    path: '/user/add',
+    path: '/user',
     controller: addUser,
     middleware: [validate(userSchemas.addUser)],
   },
   {
     method: 'POST',
-    path: '/user/authenticate',
+    path: '/user/auth',
     controller: authenticateUser,
     middleware: [validate(userSchemas.authenticateUser)],
   },
