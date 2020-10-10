@@ -1,7 +1,7 @@
 import { validate } from 'express-validation';
 import * as familySchemas from '../schemas/family';
 import {
-  getById, createFamily, updateBudget,
+  getById, createFamily, addSpending, addFund,
 } from '../controllers/family';
 
 export default [
@@ -19,7 +19,14 @@ export default [
   },
   {
     method: 'PATCH',
-    path: '/family/:_id',
-    controller: updateBudget,
+    path: '/family/:_id/spending',
+    controller: addSpending,
+    middleware: [validate(familySchemas.addSpending)],
+  },
+  {
+    method: 'PATCH',
+    path: '/family/:_id/fund',
+    controller: addFund,
+    middleware: [validate(familySchemas.addFund)],
   },
 ];

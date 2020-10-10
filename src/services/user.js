@@ -11,7 +11,9 @@ const UserService = ({ UserModel }) => {
     //  Checking if user with given email exists
     const user = await UserModel.findOne({ email });
 
-    const { _id, name, isAdmin } = user;
+    const {
+      _id, name, isAdmin, familyId,
+    } = user;
     //  Password validation comparing hash of given password with hashed password from db
     const validPassword = await bcrypt.compare(password, user.password);
 
@@ -26,6 +28,7 @@ const UserService = ({ UserModel }) => {
           name,
           email,
           isAdmin,
+          familyId,
         },
       };
     }

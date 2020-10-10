@@ -12,3 +12,21 @@ export const createFamily = {
     name: Joi.string().required(),
   }),
 };
+
+export const addSpending = {
+  params: Joi.object({
+    _id: Joi.objectId().required(),
+  }),
+  body: Joi.object({
+    spentAmount: Joi.number().min(0).required(),
+  }),
+};
+
+export const addFund = {
+  params: Joi.object({
+    _id: Joi.objectId().required(),
+  }),
+  body: Joi.object({
+    newFund: Joi.number().min(0).required(),
+  }),
+};
