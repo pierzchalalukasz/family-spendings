@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import routes from './routes';
 
 import createContainer from './container';
-import { handleError } from './utils/error';
+import { handleError } from './middleware/error';
 
 dotenv.config();
 

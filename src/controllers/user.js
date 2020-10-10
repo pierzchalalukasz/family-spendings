@@ -1,4 +1,4 @@
-import { ErrorHandler } from '../utils/error';
+import { ErrorHandler } from '../middleware/error';
 
 export const getById = ({ UserService }) => async (req, res, next) => {
   try {
