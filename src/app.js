@@ -32,8 +32,8 @@ export const init = async (dependenciesOverride) => {
     }
 
     const registeringFn = app[method.toLowerCase()].bind(app);
-
-    const handlers = [...(middleware || []), controller(dependencies)];
+    const injectDependencies = (handlerCreator) => handlerCreator(dependencies);
+    const handlers = [...(middleware || []), controller].map(injectDependencies);
 
     return registeringFn(path, ...handlers);
   });

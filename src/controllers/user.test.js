@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { getById, authenticateUser } from './user';
 
 describe('user controller', () => {
@@ -62,6 +61,7 @@ describe('user controller', () => {
       );
     });
   });
+
   describe('authenticateUser', () => {
     it('when credentials are valid - returns the user and token', async () => {
     // given
@@ -81,7 +81,7 @@ describe('user controller', () => {
         familyId: '5f7ceb3967bbb1234f41afca',
       };
 
-      const token = jwt.sign({ _id: user.id }, 'TOKEN_SECRET goes here');
+      const token = 'THIS IS TOKEN';
 
       UserService.authenticateUser.mockImplementationOnce(async () => ({ user, token }));
 

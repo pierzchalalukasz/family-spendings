@@ -44,7 +44,7 @@ export const addSpending = ({ FamilyService }) => async (req, res, next) => {
 
     await FamilyService.updateBudget(_id, updatedBudget);
 
-    return res.sendStatus(200).json({ message: 'Your budget has been updated.' });
+    return res.sendStatus(200);
   } catch (error) {
     return next(error);
   }
@@ -71,7 +71,7 @@ export const addFund = ({ FamilyService }) => async (req, res, next) => {
 
     await FamilyService.updateBudget(_id, updatedBudget);
 
-    return res.sendStatus(200).json({ message: 'Your budget has been updated.' });
+    return res.sendStatus(200);
   } catch (error) {
     return next(error);
   }

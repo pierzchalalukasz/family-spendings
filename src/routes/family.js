@@ -1,4 +1,6 @@
-import { validate } from 'express-validation';
+import validate from '../middleware/validate';
+import { auth } from '../middleware/auth';
+import isAdmin from '../middleware/isAdmin';
 import * as familySchemas from '../schemas/family';
 import {
   getById, createFamily, addSpending, addFund,
@@ -9,7 +11,7 @@ export default [
     method: 'GET',
     path: '/family/:id',
     controller: getById,
-    middleware: [validate(familySchemas.getById)],
+    middleware: [auth, validate(familySchemas.getById)],
   },
   {
     method: 'POST',
@@ -27,6 +29,6 @@ export default [
     method: 'PATCH',
     path: '/family/:_id/fund',
     controller: addFund,
-    middleware: [validate(familySchemas.addFund)],
+    middleware: [auth, isAdmin, validate(familySchemas.addFund)],
   },
 ];

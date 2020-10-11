@@ -59,6 +59,16 @@ export const addUser = ({ UserService, FamilyService }) => async (req, res, next
   }
 };
 
+export const loadCurrentUser = () => async (req, res, next) => {
+  try {
+    const { user } = req;
+
+    return res.json(user);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export const getAll = ({ UserService }) => async (req, res, next) => {
   try {
     const users = await UserService.getAll();
