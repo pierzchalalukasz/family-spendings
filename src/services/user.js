@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const UserService = ({ UserModel }) => {
   const getById = async (id) => {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(id).select('-password');
     return user;
   };
 

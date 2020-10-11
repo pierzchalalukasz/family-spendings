@@ -18,6 +18,7 @@ export const addUser = {
     name: Joi.string().required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
+    confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
     isAdmin: Joi.boolean(),
     familyId: Joi.when('isAdmin', { is: false, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
     familyName: Joi.when('isAdmin', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),

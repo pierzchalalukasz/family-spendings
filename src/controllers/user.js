@@ -15,11 +15,12 @@ export const getById = ({ UserService }) => async (req, res, next) => {
 export const authenticateUser = ({ UserService }) => async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const { user, token } = await UserService.authenticateUser(email, password);
+    const result = await UserService.authenticateUser(email, password);
 
-    if (!user) {
-      throw new ErrorHandler(404, 'User with given email not found.');
+    if (!result) {
+      throw new ErrorHandler(404, 'User with given credentials not found.');
     }
+    const { user, token } = result;
     return res.json({ user, token });
   } catch (error) {
     return next(error);

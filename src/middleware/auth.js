@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ErrorHandler } from '../utils/error';
+import { ErrorHandler } from './error';
 
 // eslint-disable-next-line import/prefer-default-export
 export const auth = (req, res, next) => {
