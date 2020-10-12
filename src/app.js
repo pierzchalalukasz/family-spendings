@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 import routes from './routes';
 
@@ -15,6 +16,7 @@ export const init = async (dependenciesOverride) => {
   const port = process.env.PORT;
 
   app.use(bodyParser.json());
+  app.use(cors());
 
   const db = await mongoose.connect(process.env.DB_CONNECTION_STRING, {
     useNewUrlParser: true, useUnifiedTopology: true,
