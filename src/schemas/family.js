@@ -7,6 +7,12 @@ export const getById = {
   }),
 };
 
+export const getBudgetByFamilyId = {
+  params: Joi.object({
+    id: Joi.objectId().required(),
+  }),
+};
+
 export const createFamily = {
   body: Joi.object({
     name: Joi.string().required(),

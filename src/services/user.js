@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { ErrorHandler } from '../middleware/error';
 
 const UserService = ({ UserModel }) => {
   const getById = async (id) => {
@@ -10,6 +11,10 @@ const UserService = ({ UserModel }) => {
   const authenticateUser = async (email, password) => {
     //  Checking if user with given email exists
     const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw new ErrorHandler(404, 'User with given email not found.');
+    }
 
     const {
       _id, name, isAdmin, familyId,

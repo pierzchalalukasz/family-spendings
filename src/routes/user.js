@@ -8,9 +8,15 @@ import {
 export default [
   {
     method: 'GET',
+    path: '/user/current',
+    controller: loadCurrentUser,
+    middleware: [auth],
+  },
+  {
+    method: 'GET',
     path: '/user/:id',
     controller: getById,
-    middleware: [validate(userSchemas.getById)],
+    middleware: [auth, validate(userSchemas.getById)],
   },
   {
     method: 'GET',
@@ -28,11 +34,5 @@ export default [
     path: '/user/auth',
     controller: authenticateUser,
     middleware: [validate(userSchemas.authenticateUser)],
-  },
-  {
-    method: 'GET',
-    path: '/current',
-    controller: loadCurrentUser,
-    middleware: [auth],
   },
 ];

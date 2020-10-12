@@ -5,6 +5,12 @@ const FamilyService = ({ FamilyModel }) => {
     return family;
   };
 
+  const getBudgetByFamilyId = async (id) => {
+    const budget = await FamilyModel.findById(id).select('budget');
+
+    return budget;
+  };
+
   const createFamily = async (name) => {
     const family = await FamilyModel.create({ name });
 
@@ -19,6 +25,7 @@ const FamilyService = ({ FamilyModel }) => {
 
   return {
     getById,
+    getBudgetByFamilyId,
     createFamily,
     updateBudget,
   };

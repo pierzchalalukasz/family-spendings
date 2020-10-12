@@ -1,4 +1,5 @@
 import { ErrorHandler } from '../middleware/error';
+import parseNumber from '../utils/parseNumber';
 
 export const getById = ({ FamilyService }) => async (req, res, next) => {
   try {
@@ -13,11 +14,16 @@ export const getById = ({ FamilyService }) => async (req, res, next) => {
   }
 };
 
-export const createFamily = ({ FamilyService }) => async (req, res, next) => {
+export const getBudgetByFamilyId = ({ FamilyService }) => async (req, res, next) => {
   try {
-    const { name } = req.body;
-    const family = await FamilyService.createFamily(name);
-    return res.json(family);
+    const { id } = req.params;
+
+    const budget = await FamilyService.getBudgetByFamilyId(id);
+
+    if (!budget) {
+      throw new ErrorHandler(404, 'Family with given id not found.');
+    }
+    return res.json(budget);
   } catch (error) {
     return next(error);
   }
@@ -35,14 +41,17 @@ export const addSpending = ({ FamilyService }) => async (req, res, next) => {
     }
 
     const { budget } = family;
+    const parsedSpentAmount = parseNumber(spentAmount);
 
-    const updatedBudget = budget - spentAmount;
+    const updatedBudget = budget - parsedSpentAmount;
 
-    if (updatedBudget < 0 || spentAmount < 0) {
-      throw new ErrorHandler(400, 'You cannot add this spending.');
+    const parsedUpdatedBudget = parseNumber(updatedBudget);
+
+    if (updatedBudget < 0) {
+      throw new ErrorHandler(400, `You cannot add this spending. Your budget is just ${budget}$.`);
     }
 
-    await FamilyService.updateBudget(_id, updatedBudget);
+    await FamilyService.updateBudget(_id, parsedUpdatedBudget);
 
     return res.sendStatus(200);
   } catch (error) {
@@ -61,15 +70,15 @@ export const addFund = ({ FamilyService }) => async (req, res, next) => {
       throw new ErrorHandler(404, 'Family with given id not found.');
     }
 
+    const parsedNewFund = parseNumber(newFund);
+
     const { budget } = family;
 
-    const updatedBudget = budget + newFund;
+    const updatedBudget = budget + parsedNewFund;
 
-    if (newFund <= 0) {
-      throw new ErrorHandler(400, 'Amount of new funds need to be greater than zero.');
-    }
+    const parsedUpdatedBudget = parseNumber(updatedBudget);
 
-    await FamilyService.updateBudget(_id, updatedBudget);
+    await FamilyService.updateBudget(_id, parsedUpdatedBudget);
 
     return res.sendStatus(200);
   } catch (error) {

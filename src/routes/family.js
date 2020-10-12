@@ -3,7 +3,7 @@ import { auth } from '../middleware/auth';
 import isAdmin from '../middleware/isAdmin';
 import * as familySchemas from '../schemas/family';
 import {
-  getById, createFamily, addSpending, addFund,
+  getById, addSpending, addFund, getBudgetByFamilyId,
 } from '../controllers/family';
 
 export default [
@@ -14,19 +14,19 @@ export default [
     middleware: [auth, validate(familySchemas.getById)],
   },
   {
-    method: 'POST',
-    path: '/family',
-    controller: createFamily,
-    middleware: [validate(familySchemas.createFamily)],
+    method: 'GET',
+    path: '/family/:id/budget',
+    controller: getBudgetByFamilyId,
+    middleware: [auth, validate(familySchemas.getBudgetByFamilyId)],
   },
   {
-    method: 'PATCH',
+    method: 'PUT',
     path: '/family/:_id/spending',
     controller: addSpending,
-    middleware: [validate(familySchemas.addSpending)],
+    middleware: [auth, validate(familySchemas.addSpending)],
   },
   {
-    method: 'PATCH',
+    method: 'PUT',
     path: '/family/:_id/fund',
     controller: addFund,
     middleware: [auth, isAdmin, validate(familySchemas.addFund)],
