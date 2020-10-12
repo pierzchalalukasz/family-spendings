@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { ErrorHandler } from './error';
+import { HttpError } from './error';
 
 // eslint-disable-next-line import/prefer-default-export
 export const auth = ({ UserService }) => async (req, res, next) => {
@@ -11,7 +11,7 @@ export const auth = ({ UserService }) => async (req, res, next) => {
 
       return _id;
     } catch (error) {
-      throw new ErrorHandler(401, 'Token is not valid.');
+      throw new HttpError(401, 'Token is not valid.');
     }
   };
 
@@ -19,7 +19,7 @@ export const auth = ({ UserService }) => async (req, res, next) => {
     const user = await UserService.getById(userId);
 
     if (!user) {
-      throw new ErrorHandler(401, 'Token is not valid.');
+      throw new HttpError(401, 'Token is not valid.');
     }
 
     return user;
@@ -31,7 +31,7 @@ export const auth = ({ UserService }) => async (req, res, next) => {
 
   const authenticate = async () => {
     if (!token) {
-      throw new ErrorHandler(401, 'No token, authorization denied.');
+      throw new HttpError(401, 'No token, authorization denied.');
     }
 
     const userId = getUserIdFromToken(token);

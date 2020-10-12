@@ -1,4 +1,4 @@
-import { ErrorHandler } from '../middleware/error';
+import { HttpError } from '../middleware/error';
 import parseNumber from '../utils/parseNumber';
 
 export const getById = ({ FamilyService }) => async (req, res, next) => {
@@ -7,7 +7,7 @@ export const getById = ({ FamilyService }) => async (req, res, next) => {
     const family = await FamilyService.getById(id);
 
     if (!family) {
-      throw new ErrorHandler(404, 'Family with given id not found.');
+      throw new HttpError(404, 'Family with given id not found.');
     }
 
     return res.json(family);
@@ -22,7 +22,7 @@ export const getBudgetByFamilyId = ({ FamilyService }) => async (req, res, next)
     const family = await FamilyService.getById(id);
 
     if (!family) {
-      throw new ErrorHandler(404, 'Family with given id not found.');
+      throw new HttpError(404, 'Family with given id not found.');
     }
 
     const { budget } = family;
@@ -41,7 +41,7 @@ export const addSpending = ({ FamilyService }) => async (req, res, next) => {
     const family = await FamilyService.getById(familyId);
 
     if (!family) {
-      throw new ErrorHandler(404, 'Family with given id not found.');
+      throw new HttpError(404, 'Family with given id not found.');
     }
 
     return family;
@@ -53,7 +53,7 @@ export const addSpending = ({ FamilyService }) => async (req, res, next) => {
     const parsedUpdatedBudget = parseNumber(updatedBudget);
 
     if (parsedUpdatedBudget < 0) {
-      throw new ErrorHandler(400, `You cannot add this spending. Your budget is just ${budget}$.`);
+      throw new HttpError(400, `You cannot add this spending. Your budget is just ${budget}$.`);
     }
 
     return parsedUpdatedBudget;
@@ -86,7 +86,7 @@ export const addFund = ({ FamilyService }) => async (req, res, next) => {
     const family = await FamilyService.getById(_id);
 
     if (!family) {
-      throw new ErrorHandler(404, 'Family with given id not found.');
+      throw new HttpError(404, 'Family with given id not found.');
     }
 
     const parsedNewFund = parseNumber(newFund);

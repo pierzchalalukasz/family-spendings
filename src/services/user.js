@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { ErrorHandler } from '../middleware/error';
+import { HttpError } from '../middleware/error';
 
-const UserService = ({ UserModel }) => {
+const UserService = ({ UserModel, config }) => {
   const getById = async (id) => {
     const user = await UserModel.findById(id).select('-password');
     return user;
@@ -13,7 +13,7 @@ const UserService = ({ UserModel }) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      throw new ErrorHandler(404, 'User with given email not found.');
+      throw new HttpError(404, 'User with given email not found.');
     }
 
     const {
@@ -23,8 +23,8 @@ const UserService = ({ UserModel }) => {
     const validPassword = await bcrypt.compare(password, user.password);
 
     // Creating JWT token based on user's _id and TOKKEN_SERCRET
-    if (user && validPassword) {
-      const token = jwt.sign({ _id }, process.env.TOKEN_SECRET);
+    if (validPassword) {
+      const token = jwt.sign({ _id }, config.TOKEN_SECRET);
 
       return {
         token,
@@ -60,17 +60,10 @@ const UserService = ({ UserModel }) => {
     return user;
   };
 
-  const getAll = async () => {
-    const users = await UserModel.find();
-
-    return users;
-  };
-
   return {
     getById,
     authenticateUser,
     addUser,
-    getAll,
   };
 };
 

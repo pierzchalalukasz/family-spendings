@@ -2,7 +2,7 @@ import validate from '../middleware/validate';
 import { auth } from '../middleware/auth';
 import * as userSchemas from '../schemas/user';
 import {
-  getById, addUser, authenticateUser, getAll, loadCurrentUser,
+  addUser, authenticateUser, loadCurrentUser,
 } from '../controllers/user';
 
 export default [
@@ -11,17 +11,6 @@ export default [
     path: '/user/current',
     controller: loadCurrentUser,
     middleware: [auth],
-  },
-  {
-    method: 'GET',
-    path: '/user/:id',
-    controller: getById,
-    middleware: [auth, validate(userSchemas.getById)],
-  },
-  {
-    method: 'GET',
-    path: '/user',
-    controller: getAll,
   },
   {
     method: 'POST',

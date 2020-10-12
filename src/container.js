@@ -3,9 +3,10 @@ import UserModel from './models/user';
 import FamilyService from './services/family';
 import UserService from './services/user';
 
-const createContainer = (db) => {
+const createContainer = (db, config) => {
   const container = {
     db,
+    config,
     FamilyModel,
     UserModel,
   };
