@@ -19,12 +19,13 @@ export const getById = ({ FamilyService }) => async (req, res, next) => {
 export const getBudgetByFamilyId = ({ FamilyService }) => async (req, res, next) => {
   try {
     const { id } = req.params;
+    const family = await FamilyService.getById(id);
 
-    const budget = await FamilyService.getBudgetByFamilyId(id);
-
-    if (!budget) {
+    if (!family) {
       throw new ErrorHandler(404, 'Family with given id not found.');
     }
+
+    const { budget } = family;
 
     return res.json(budget);
   } catch (error) {
