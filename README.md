@@ -39,7 +39,7 @@ Before running the project, ensure MongoDB is running.
     }
     ```
 
-    method: `POST`  
+  - method: `POST`  
     path: `/user`  
     body:
       ```
@@ -74,7 +74,7 @@ Before running the project, ensure MongoDB is running.
       }
       ```
 
-    method: `POST`  
+  - method: `POST`  
     path: `/user/auth`  
     body:
     ```
@@ -97,7 +97,7 @@ Before running the project, ensure MongoDB is running.
     }
     ```
 
-    method: `GET`  
+  - method: `GET`  
     path: `/family/:id`  
     params:
     ```
@@ -114,7 +114,7 @@ Before running the project, ensure MongoDB is running.
     }
     ```
   
-    method: `GET`  
+  - method: `GET`  
     path: `/family/:id/budget`  
     params:
     ```
@@ -129,7 +129,7 @@ Before running the project, ensure MongoDB is running.
     }
     ```
   
-    method: `PUT`  
+  - method: `PUT`  
     path: `/family/:_id/spending`  
     params:
     ```
@@ -147,7 +147,7 @@ Before running the project, ensure MongoDB is running.
     ```
     200
     ```  
-    method: `PUT`  
+  - method: `PUT`  
     path: `/family/:_id/fund`  
     params:
     ```
